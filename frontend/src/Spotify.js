@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import SpotifySearch from "./components/spotifySearch";
+import SpotifySearch from "../src/components/spotifySearch";
 
 const CLIENT_ID = "f64a840edf8c4442bbd6ac2fc2432d8c";
 const SPOTIFY_AUTHORIZE_ENDPOINT ="https://accounts.spotify.com/authorize";
@@ -12,7 +12,7 @@ const getReturnedParamsFromSpotifyAuth = (hash) => {
     const stringAfterHashtag = hash.substring(1);
     const paramsInUrl = stringAfterHashtag.split("&");
     const paramsSplitUp = paramsInUrl.reduce((accmulater, currentValue) => {
-        console.log(currentValue);
+        console.log("current value :", currentValue);
         const [key, value] = currentValue.split("=");
         accmulater[key] = value;
         return accmulater;
@@ -47,6 +47,8 @@ const Spotify = () => {
                 Login to spotify
             </button>
             <SpotifySearch/>
+
+            
         </div>
     );
 

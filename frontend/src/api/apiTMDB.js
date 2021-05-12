@@ -27,12 +27,16 @@ export const getMovieBySearch = async (value) => {
     
     try{
         
-        const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=9d1d6a6efdcd6adbf672133bfea8f1f1&language=en-US&page=1&include_adult=false&query=se7en`);
+        const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=9d1d6a6efdcd6adbf672133bfea8f1f1&language=en-US&page=1&include_adult=false&query=${value}`);
 
         console.log("response", response);
-        // console.log("filmnamn!!!!!", movieName);
+ //      
+//     console.log("filmnamn!!!!!", movieName);
         const data = await response.json();
+        console.log(" data ????? ______ : ", data)
 
+        const movieName = data.results[0].title;
+        console.log(" movieName????? ______ : ", movieName)
         return data;
     }
     catch (error){
@@ -41,3 +45,5 @@ export const getMovieBySearch = async (value) => {
     }
 
 }
+
+
