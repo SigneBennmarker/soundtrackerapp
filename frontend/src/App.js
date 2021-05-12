@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Switch, Route } from 'react-router-dom';
 import Spotify from './Spotify'
-import SearchForm from "../src/Components/SearchForm";
+import SearchForm from "../src/components/SearchForm";
 
 function App() {
   return (

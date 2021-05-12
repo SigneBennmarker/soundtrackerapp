@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import SearchButton from "../SeachButton";
+import SearchButton from "../SearchButton";
 import TextInput from "../TextInput";
 import {getMovieById,getMovieBySearch} from '../../api/apiTMDB'
 import useStyles from "./styles";
