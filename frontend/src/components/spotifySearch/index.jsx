@@ -31,8 +31,6 @@ const SpotifySearch = () => {
         setPlaylistName(response.data.playlists.items[0].name);
         setPlaylistUrl(response.data.playlists.items[0].external_urls.spotify);
         console.log("spotify response: ", response);
-        console.log("spotify data: ", data);
-        console.log("spotify playlists: ", data.playlists);
       })
       .catch((error) => {
         console.log("error i handle_search", error);
