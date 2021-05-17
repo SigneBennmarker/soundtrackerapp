@@ -29,6 +29,10 @@ const SearchForm = ({ label, value, setValue }) => {
 
     movie.overview = data.overview;
     movie.poster_path = data.poster_path;
+    movie.runtime = data.runtime; 
+    movie.vote_average = data.vote_average;
+
+
     
 
     console.log("movie object: ", movie);
@@ -59,7 +63,12 @@ const SearchForm = ({ label, value, setValue }) => {
           <h3>Info som ska synas när en film är "vald" </h3> */}
           <p>overview:</p>
           <p> {movie.overview}</p>
-         
+          <p>runtime:</p>
+
+          <p> {movie.runtime}</p>
+          <p> {movie.vote_average}</p>
+
+
 {/*          
           <p>runtime: {movieRuntime}</p>
           <p>vote average: {movieVoteAvg}/10</p>
