@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import useStyles from "./styles";
 
+const CLIENT_ID = "f64a840edf8c4442bbd6ac2fc2432d8c";
+const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
+const REDIRECT_URL_AFTER_LOGIN = "http://localhost:3000/";
+const SCOPES = ["playlist-modify-public"];
+const SPACE_DELIMETER = "%20";
+const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMETER);
 
 const SEARCH_ENDPOINT =
     "https://api.spotify.com/v1/search?q=frozen&type=playlist";
@@ -26,6 +32,10 @@ const SpotifySearch = () => {
         }
     }, []);
 
+    const handleLogin = () => {
+        window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL_AFTER_LOGIN}&scope=${SCOPES_URL_PARAM}&response_type=token&show_dialog=true`;
+    }
+
     const handleSearch = () => {
         axios
             .get(SEARCH_ENDPOINT, {
@@ -45,17 +55,14 @@ const SpotifySearch = () => {
 
     return (
         <div>
+            <button onClick={handleLogin} className={classes.buttonStyle}>Login with spotify</button>
             <button onClick={handleSearch} className={classes.buttonStyle}>Get music</button>
-            <p> Playlist name:</p>
-            <h5>{playlistName}</h5>
-
-            <p> Playlist link:</p>
-            <a href={playlistUrl}>{playlistUrl}</a>
+            
             <iframe
                 src={`https://open.spotify.com/embed/playlist/${playlistID}`}
                 width="500"
                 height="380"
-                frameBorder="0"
+                frameborder="0"
                 allowtransparency="true"
                 allow="encrypted-media">
             </iframe>

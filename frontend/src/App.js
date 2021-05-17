@@ -5,6 +5,7 @@ import "./App.css";
 import { BrowserRouter as Switch, Route } from "react-router-dom";
 import Spotify from "./Spotify";
 import SearchForm from "../src/components/SearchForm";
+import SpotifySearch from "../src/components/spotifySearch";
 
 
 const GET_MOVIE = gql`
@@ -19,13 +20,16 @@ function App() {
   //const { loading, error, data } = useQuery(GET_MOVIE)
   //  console.log("data: ", data)
 
+  
+
   return (
     <div className="App">
       <header className="App-header">
         <Switch>
           <Route path="/spotify" component={Spotify} />
         </Switch>
-        <SearchForm></SearchForm>
+        <SearchForm></SearchForm>  
+        <SpotifySearch/>
 
       {/* {data} */}
       </header>

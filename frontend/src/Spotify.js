@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import SpotifySearch from "../src/components/spotifySearch";
 
 const CLIENT_ID = "f64a840edf8c4442bbd6ac2fc2432d8c";
 const SPOTIFY_AUTHORIZE_ENDPOINT ="https://accounts.spotify.com/authorize";
-const REDIRECT_URL_AFTER_LOGIN ="http://localhost:3000/spotify";
+const REDIRECT_URL_AFTER_LOGIN ="http://localhost:3000/";
 const SCOPES = ["playlist-modify-public"];
 const SPACE_DELIMETER = "%20";
 const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMETER);
@@ -46,9 +45,7 @@ const Spotify = () => {
             <h1>Tjo</h1>
             <button onClick={handleLogin}>
                 Login with spotify
-            </button>
-            <SpotifySearch/>
-            
+            </button>            
         </div>
     );
 
