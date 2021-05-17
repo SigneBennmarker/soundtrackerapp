@@ -22,6 +22,7 @@ const getReturnedParamsFromSpotifyAuth = (hash) => {
 }
 
 const Spotify = () => {
+
     useEffect(() => {
         if(window.location.hash) {
             const {
@@ -44,10 +45,9 @@ const Spotify = () => {
         <div>
             <h1>Tjo</h1>
             <button onClick={handleLogin}>
-                Login to spotify
+                Login with spotify
             </button>
             <SpotifySearch/>
-
             
         </div>
     );

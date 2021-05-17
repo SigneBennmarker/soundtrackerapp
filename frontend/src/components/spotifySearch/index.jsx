@@ -1,53 +1,66 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import useStyles from "./styles";
+
 
 const SEARCH_ENDPOINT =
-  "https://api.spotify.com/v1/search?q=frozen&type=playlist";
+    "https://api.spotify.com/v1/search?q=frozen&type=playlist";
 
 const SpotifySearch = () => {
-  const [token, setToken] = useState("");
-  const [data, setData] = useState();
-  const [playlistName, setPlaylistName] = useState("");
-  const [playlistUrl, setPlaylistUrl] = useState("");
-  const headers = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + token,
-  };
+    const classes = useStyles();
+    const [token, setToken] = useState("");
+    const [data, setData] = useState();
+    const [playlistName, setPlaylistName] = useState("");
+    const [playlistUrl, setPlaylistUrl] = useState("");
+    const [playlistID, setPlaylistID] = useState("");
 
-  useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      setToken(localStorage.getItem("accessToken"));
-    }
-  }, []);
+    const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+    };
 
-  const handleSearch = () => {
-    axios
-      .get(SEARCH_ENDPOINT, {
-        headers: headers,
-      })
-      .then((response) => {
-        setData(response.data);
-        setPlaylistName(response.data.playlists.items[0].name);
-        setPlaylistUrl(response.data.playlists.items[0].external_urls.spotify);
-        console.log("spotify response: ", response);
-      })
-      .catch((error) => {
-        console.log("error i handle_search", error);
-      });
-  };
+    useEffect(() => {
+        if (localStorage.getItem("accessToken")) {
+            setToken(localStorage.getItem("accessToken"));
+        }
+    }, []);
 
-  return (
-    <div>
-      <button onClick={handleSearch}>Get music</button>
-      <p> Playlist name:</p>
+    const handleSearch = () => {
+        axios
+            .get(SEARCH_ENDPOINT, {
+                headers: headers,
+            })
+            .then((response) => {
+                setData(response.data);
+                setPlaylistName(response.data.playlists.items[0].name);
+                setPlaylistID(response.data.playlists.items[0].id)
+                setPlaylistUrl(response.data.playlists.items[0].external_urls.spotify);
+                console.log("spotify response: ", response);
+            })
+            .catch((error) => {
+                console.log("error i handle_search", error);
+            });
+    };
 
-      <h5>{playlistName}</h5>
-      <p> Playlist link:</p>
+    return (
+        <div>
+            <button onClick={handleSearch} className={classes.buttonStyle}>Get music</button>
+            <p> Playlist name:</p>
+            <h5>{playlistName}</h5>
 
-      <a href={playlistUrl}>{playlistUrl}</a>
-    </div>
-  );
+            <p> Playlist link:</p>
+            <a href={playlistUrl}>{playlistUrl}</a>
+            <iframe
+                src={`https://open.spotify.com/embed/playlist/${playlistID}`}
+                width="500"
+                height="380"
+                frameBorder="0"
+                allowtransparency="true"
+                allow="encrypted-media">
+            </iframe>
+        </div>
+    );
 };
 
 export default SpotifySearch;

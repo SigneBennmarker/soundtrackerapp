@@ -18,6 +18,7 @@ const useStyles = makeStyles({
         color: 'white',
         
     }
+    
   });
 
   export default useStyles;
