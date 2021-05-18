@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState , useContext} from "react";
 import TextInput from "../TextInput";
 import { getMovieById, getMovieBySearch } from "../../api/apiTMDB";
 import useStyles from "./styles";
 import MatchingMovies from "../MatchingMovies";
+import SpotifySearch from "../spotifySearch";
+
+const NumberContext = React.createContext();
 
 const SearchForm = ({ label, value, setValue }) => {
   const classes = useStyles();
@@ -29,11 +32,11 @@ const SearchForm = ({ label, value, setValue }) => {
 
     movie.overview = data.overview;
     movie.poster_path = data.poster_path;
-    movie.runtime = data.runtime; 
+    movie.runtime = data.runtime;
     movie.vote_average = data.vote_average;
 
 
-    
+
 
     console.log("movie object: ", movie);
     setMovie(movie);
@@ -54,32 +57,35 @@ const SearchForm = ({ label, value, setValue }) => {
           className={classes.buttonStyle}
         ></input>
       </form>
-
-      {movie && (
-        <div>
-          {/* <h3>Info som ska synas i sökningen: </h3>
+      <NumberContext.Provider value={movie.title}>
+        {movie && (
+          <div>
+            {/* <h3>Info som ska synas i sökningen: </h3>
           <p>{movieNames}</p>
           <p>{movieReleaseYear}</p>
           <h3>Info som ska synas när en film är "vald" </h3> */}
-          <p>overview:</p>
-          <p> {movie.overview}</p>
-          <p>runtime:</p>
+            <p>overview:</p>
+            <p> {movie.overview}</p>
+            <p>runtime:</p>
 
-          <p> {movie.runtime}</p>
-          <p> {movie.vote_average}</p>
+            <p> {movie.runtime}</p>
+            <p> {movie.vote_average}</p>
 
 
-{/*          
+            {/*          
           <p>runtime: {movieRuntime}</p>
           <p>vote average: {movieVoteAvg}/10</p>
           */}
 
-          <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="movie poster" /> 
-        </div>
-      )}
-
+            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="movie poster" />
+          </div>
+        )}
+      
       {/* {matchingMovies?.items ? matchingMovies.items.map((item) => <h1>{item.page}</h1>): 3 }  */}
+      <SpotifySearch value={movie.title}/>
+      </NumberContext.Provider>
     </>
+
   );
 };
 

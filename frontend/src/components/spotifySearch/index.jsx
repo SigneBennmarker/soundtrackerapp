@@ -9,16 +9,45 @@ const SCOPES = ["playlist-modify-public"];
 const SPACE_DELIMETER = "%20";
 const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMETER);
 
-const SEARCH_ENDPOINT =
-    "https://api.spotify.com/v1/search?q=frozen&type=playlist";
+// const SEARCH_ENDPOINT =
+//     "https://api.spotify.com/v1/search?q=frozen&type=playlist";
 
-const SpotifySearch = () => {
+const getReturnedParamsFromSpotifyAuth = (hash) => {
+    const stringAfterHashtag = hash.substring(1);
+    const paramsInUrl = stringAfterHashtag.split("&");
+    const paramsSplitUp = paramsInUrl.reduce((accmulater, currentValue) => {
+        console.log("current value :", currentValue);
+        const [key, value] = currentValue.split("=");
+        accmulater[key] = value;
+        return accmulater;
+    }, {});
+
+    return paramsSplitUp;
+}
+
+const SpotifySearch = (value) => {
     const classes = useStyles();
     const [token, setToken] = useState("");
     const [data, setData] = useState();
     const [playlistName, setPlaylistName] = useState("");
     const [playlistUrl, setPlaylistUrl] = useState("");
     const [playlistID, setPlaylistID] = useState("");
+
+    useEffect(() => {
+        if (window.location.hash) {
+            const {
+                access_token,
+                expires_in,
+                token_type
+            } = getReturnedParamsFromSpotifyAuth(window.location.hash);
+
+            localStorage.clear();
+            localStorage.setItem("accessToken", access_token);
+            localStorage.setItem("expiresIn", expires_in);
+            localStorage.setItem("tokenType", token_type);
+        }
+    });
+
 
     const headers = {
         Accept: "application/json",
@@ -36,16 +65,16 @@ const SpotifySearch = () => {
         window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL_AFTER_LOGIN}&scope=${SCOPES_URL_PARAM}&response_type=token&show_dialog=true`;
     }
 
-    const handleSearch = () => {
+    const handleSearch = (value) => {
+       
+        console.log("I handleSearch", value)
         axios
-            .get(SEARCH_ENDPOINT, {
+            .get(`https://api.spotify.com/v1/search?q=${value}&type=playlist`, {
                 headers: headers,
             })
             .then((response) => {
                 setData(response.data);
-                setPlaylistName(response.data.playlists.items[0].name);
                 setPlaylistID(response.data.playlists.items[0].id)
-                setPlaylistUrl(response.data.playlists.items[0].external_urls.spotify);
                 console.log("spotify response: ", response);
             })
             .catch((error) => {
@@ -56,11 +85,11 @@ const SpotifySearch = () => {
     return (
         <div>
             <button onClick={handleLogin} className={classes.buttonStyle}>Login with spotify</button>
-            <button onClick={handleSearch} className={classes.buttonStyle}>Get music</button>
-            
+            <button onClick={handleSearch({value})} className={classes.buttonStyle}>Get music</button>
+
             <iframe
                 src={`https://open.spotify.com/embed/playlist/${playlistID}`}
-                width="500"
+                width="800"
                 height="380"
                 frameborder="0"
                 allowtransparency="true"
