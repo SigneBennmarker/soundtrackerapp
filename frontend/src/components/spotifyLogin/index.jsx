@@ -1,4 +1,5 @@
-import React, { useEffect, useState , useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { SiSpotify } from 'react-icons/si';
 import useStyles from "./styles";
 
 
@@ -23,7 +24,7 @@ const getReturnedParamsFromSpotifyAuth = (hash) => {
     return paramsSplitUp;
 }
 
-const SpotifyLogin = ({value}) => {
+const SpotifyLogin = ({ value }) => {
     const [token, setToken] = useState("");
     const classes = useStyles();
 
@@ -55,7 +56,15 @@ const SpotifyLogin = ({value}) => {
 
     return (
         <div>
-            <button onClick={handleLogin} className={classes.buttonStyle}>Login with spotify</button>
+            <button
+                onClick={handleLogin}
+                className={classes.buttonStyle}>
+                <SiSpotify
+                    size={30}
+                    className={classes.icon} />
+                <strong
+                className={classes.text}>LOGIN WITH SPOTIFY</strong>
+            </button>
         </div>
     );
 };

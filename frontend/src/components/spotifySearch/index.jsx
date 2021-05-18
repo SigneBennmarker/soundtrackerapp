@@ -80,7 +80,7 @@ const SpotifySearch = ({value}) => {
 
             <iframe
                 src={`https://open.spotify.com/embed/playlist/${playlistID}`}
-                width="800"
+                width="90%"
                 height="380"
                 frameborder="0"
                 allowtransparency="true"

@@ -23,7 +23,7 @@ function App() {
 
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
-      setLoggedIn('true');
+      setLoggedIn('false');
     }
   }, []);
 
