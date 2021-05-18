@@ -19,13 +19,15 @@ const getReturnedParamsFromSpotifyAuth = (hash) => {
     return paramsSplitUp;
 }
 
-const SpotifySearch = ({value}) => {
+const SpotifySearch = ({ value }) => {
     const movieTitle = value;
     console.log("movieTilte: ", movieTitle)
     const classes = useStyles();
     const [token, setToken] = useState("");
     const [data, setData] = useState();
     const [playlistID, setPlaylistID] = useState("");
+    const [searched, setSearched] = useState('false')
+
 
     useEffect(() => {
         if (window.location.hash) {
@@ -57,7 +59,7 @@ const SpotifySearch = ({value}) => {
 
 
     const handleSearch = () => {
-      // value="se7en"
+        // value="se7en"
         console.log("I handleSearch", value)
         axios
             .get(`https://api.spotify.com/v1/search?q=${value}&type=playlist`, {
@@ -71,21 +73,25 @@ const SpotifySearch = ({value}) => {
             .catch((error) => {
                 console.log("error i handle_search", error);
             });
+
+        setSearched('true');
     };
-    
+
 
     return (
         <div>
-            <button onClick={handleSearch} className={classes.buttonStyle}>Get music</button>
+            <button onClick={handleSearch} className={classes.buttonStyle}><strong>GET MUSIC</strong></button>
+            {searched === 'true' && (
+                <iframe
+                    src={`https://open.spotify.com/embed/playlist/${playlistID}`}
+                    width="90%"
+                    height="380"
+                    frameborder="0"
+                    allowtransparency="true"
+                    allow="encrypted-media">
+                </iframe>
+            )}
 
-            <iframe
-                src={`https://open.spotify.com/embed/playlist/${playlistID}`}
-                width="90%"
-                height="380"
-                frameborder="0"
-                allowtransparency="true"
-                allow="encrypted-media">
-            </iframe>
         </div>
     );
 };
