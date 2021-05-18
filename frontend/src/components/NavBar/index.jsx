@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
     paddingBottom: '0px',
     paddingTop: '40px',
-    paddingLeft: '40px',
+    paddingLeft: '7vw',
     color: '#FFFFFF',
     alignContent: 'space-between',
   },

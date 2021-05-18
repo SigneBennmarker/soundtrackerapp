@@ -62,7 +62,7 @@ const SpotifySearch = ({ value }) => {
         // value="se7en"
         console.log("I handleSearch", value)
         axios
-            .get(`https://api.spotify.com/v1/search?q=${value}&type=playlist`, {
+            .get(`https://api.spotify.com/v1/search?q=${value}%20soundtrack&type=playlist`, {
                 headers: headers,
             })
             .then((response) => {

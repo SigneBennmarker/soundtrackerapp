@@ -21,12 +21,6 @@ const SearchForm = ({ label, value, setValue }) => {
   const [searchTerm, setSeachTerm] = useState("");
   const [movie, setMovie] = useState("");
 
-  useEffect(() => {
-    let movieTest = window.sessionStorage.getItem("movie");
-    if (movieTest) {
-      console.log("TEST AV SEESSSSSions", movie.title);
-    }
-  });
 
   const split = (string) => {
     movie.release_year = string.split('-', 1)
@@ -74,27 +68,19 @@ const SearchForm = ({ label, value, setValue }) => {
     console.log("movie object: ", movie);
     setMovie(movie);
 
-    window.sessionStorage.setItem("movie", movie);
   };
 
   return (
     <>
-      <Grid container spacing={0} className="movieContent">
-        <Grid item xs={12} sm={4} className="search">
+      <Grid container spacing={8} className="movieContent">
+        <Grid item xs={12} sm={4} >
           <form onSubmit={getMovie}>
-            <h3>Search for movie</h3>
             <TextInput
               label="Search for movie"
               value={searchTerm}
               setValue={setSeachTerm}
             />
             <BiSearch/>
-          
-            {/* <input
-              type="submit"
-              value="Search"
-              className={classes.buttonStyle}
-            ></input> */}
           </form>
         </Grid>
         <Grid item xs={12} sm={8}>
@@ -115,16 +101,18 @@ const SearchForm = ({ label, value, setValue }) => {
                     {" "}
                     {movie.title} ({movie.release_year})
                   </h2>
-                  {movie.genres.map((genre) => (
-                    <small key={genre.id}>{genre.name} </small>
-                  ))}
-                  <small>- {movie.runtime} minutes</small>
-                  <small> - {movie.release_date}</small>
+                  <small> {movie.release_date}  •  </small>
 
-                  <h5>
+                  {movie.genres.map((genre, index) => (
+                    <small key={genre.id}>{(index ? ', ' : '')}{genre.name}</small>
+                  ))}
+
+                  <small> •  {movie.runtime} minutes</small>
+
+                  <h3>
                     {" "}
                     <BsStarFill size={20} /> {movie.vote_average}
-                  </h5>
+                  </h3>
 
                   <p> {movie.overview}</p>
                 </div>
@@ -134,9 +122,12 @@ const SearchForm = ({ label, value, setValue }) => {
             <Grid container spacing={4}>
               <Grid item xs={12} sm={9}>
                 {movie.actor3 && (
-                  <p>
-                    Actors: {movie.actor1}, {movie.actor2}, {movie.actor3}
+                  
+                  <div className="actors">
+                    <p> <strong>Actors</strong></p>
+                    <p> {movie.actor1}, {movie.actor2}, {movie.actor3}
                   </p>
+                  </div>
                 )}
               </Grid>
             </Grid>
@@ -146,7 +137,6 @@ const SearchForm = ({ label, value, setValue }) => {
         </Grid>
       </Grid>
 
-      {/* {matchingMovies?.items ? matchingMovies.items.map((item) => <h1>{item.page}</h1>): 3 }  */}
     </>
   );
 };

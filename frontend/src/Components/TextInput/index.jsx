@@ -7,7 +7,8 @@ const TextInput = ({ label, value, setValue }) => {
   //const classes = useStyles();
 
   return (
-    <input type="text" className="TextField"  label={label} value={value} required onChange={(e) => {
+    <input type="text" className="TextField" placeholder="Search for movie"
+    label={label} value={value} required onChange={(e) => {
       setValue(e.target.value);
     }} />
 
