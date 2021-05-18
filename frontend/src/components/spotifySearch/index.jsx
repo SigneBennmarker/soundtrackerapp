@@ -59,7 +59,6 @@ const SpotifySearch = ({ value }) => {
 
 
     const handleSearch = () => {
-        // value="se7en"
         console.log("I handleSearch", value)
         axios
             .get(`https://api.spotify.com/v1/search?q=${value}%20soundtrack&type=playlist`, {
@@ -73,7 +72,6 @@ const SpotifySearch = ({ value }) => {
             .catch((error) => {
                 console.log("error i handle_search", error);
             });
-
         setSearched('true');
     };
 
@@ -91,7 +89,6 @@ const SpotifySearch = ({ value }) => {
                     allow="encrypted-media">
                 </iframe>
             )}
-
         </div>
     );
 };
