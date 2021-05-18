@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
 import TextInput from "../TextInput";
 import {
   getMovieById,
@@ -7,15 +7,31 @@ import {
 } from "../../api/apiTMDB";
 import useStyles from "./styles";
 import MatchingMovies from "../MatchingMovies";
-import SpotifySearch from "../spotifySearch";
+import SpotifySearch from "../spotifySearch"; 
+import Grid from '@material-ui/core/Grid';
 
-const NumberContext = React.createContext();
+
+//const NumberContext = React.createContext();
+
+
 
 const SearchForm = ({ label, value, setValue }) => {
+
   const classes = useStyles();
   const [searchTerm, setSeachTerm] = useState("");
-
   const [movie, setMovie] = useState("");
+
+
+
+  useEffect(() => {
+    let movieTest = window.sessionStorage.getItem('movie');
+    if(movieTest){
+      console.log("TEST AV SEESSSSSions", movie.title)
+    }
+
+  });
+
+  
 
   const getMovie = async (e) => {
     e.preventDefault();
@@ -24,6 +40,7 @@ const SearchForm = ({ label, value, setValue }) => {
     let data = await response;
     console.log("dATa i getMovie", data);
 
+    
     let movie = {
       id: data.results[0].id,
       title: data.results[0].title,
@@ -55,12 +72,18 @@ const SearchForm = ({ label, value, setValue }) => {
 
     console.log("movie object: ", movie);
     setMovie(movie);
+    
+    window.sessionStorage.setItem('movie', movie);
+
   };
 
   return (
     <>
+      <Grid container spacing={0}>
+        <Grid item xs={12} sm={4}>
+                
       <form onSubmit={getMovie}>
-        <h2>Search for movie</h2>
+        <h3>Search for movie</h3>
         <TextInput
           label="Search for movie"
           value={searchTerm}
@@ -72,33 +95,50 @@ const SearchForm = ({ label, value, setValue }) => {
           className={classes.buttonStyle}
         ></input>
       </form>
-    
-        {movie && (
-          <div>
-            {/* <h3>Info som ska synas i sökningen: </h3>
-          <p>{movieNames}</p>
-          <p>{movieReleaseYear}</p>
-          <h3>Info som ska synas när en film är "vald" </h3> */}
-            <p>overview:</p>
-            <p> {movie.overview}</p>
-            <p>runtime:</p>
+        </Grid>
+        <Grid item xs={12} sm={8}>
 
-          <p> {movie.runtime}</p>
-          <p> {movie.vote_average}</p>
-          Genres: 
-          {movie.genres.map((genre) => (
-            <p key={genre.id}>{genre.name}</p>
-          ))}
-
-          <p>Actors: {movie.actor1}, {movie.actor2}, {movie.actor3}</p>
-
-          <img
+        <Grid container spacing={4}>
+          
+        <Grid item xs={12} sm={3}>
+        {movie && (  <img
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             alt="movie poster"
-          />
+            width="100%"
+          />)}
+        </Grid>
+        <Grid item xs={12} sm={9}>
+        {movie && (
+          <div>
+            <h1> {movie.title} ({movie.release_date})</h1>
+            {movie.genres.map((genre) => (
+            <small key={genre.id}>{genre.name} </small>
+          ))}
+          <small>- {movie.runtime} minutes</small>
+            <small> - {movie.release_date}</small>
+            <p> {movie.vote_average}</p>
+
+            <p> {movie.overview}</p>
+
+         
+          <p>Actors: {movie.actor1}, {movie.actor2}, {movie.actor3}</p>
           <SpotifySearch value={movie.title}/>
         </div>
       )}
+          
+        </Grid>
+        </Grid>
+      
+        </Grid>
+       
+      </Grid>
+
+      
+
+    
+
+
+     
 
       {/* {matchingMovies?.items ? matchingMovies.items.map((item) => <h1>{item.page}</h1>): 3 }  */}
 

@@ -11,10 +11,10 @@ const useStyles = makeStyles({
       padding: '0 50px',
     },
     buttonStyle: {
-        border: '1px solid #e5a5c2',
-        borderRadius: '4px',
+        border: '1px solid white',
+        borderRadius: '1rem',
         padding: '0.5rem 2rem 0.5rem 2rem',
-        background : '#e5a5c2',
+        background : 'transparent',
         color: 'white',
         
     }
