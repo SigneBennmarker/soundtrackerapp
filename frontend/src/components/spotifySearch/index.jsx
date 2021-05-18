@@ -25,7 +25,9 @@ const getReturnedParamsFromSpotifyAuth = (hash) => {
     return paramsSplitUp;
 }
 
-const SpotifySearch = (value) => {
+const SpotifySearch = ({value}) => {
+    const movieTitle = value;
+    console.log("movieTilte: ", movieTitle)
     const classes = useStyles();
     const [token, setToken] = useState("");
     const [data, setData] = useState();
@@ -63,10 +65,11 @@ const SpotifySearch = (value) => {
 
     const handleLogin = () => {
         window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL_AFTER_LOGIN}&scope=${SCOPES_URL_PARAM}&response_type=token&show_dialog=true`;
+        
     }
 
-    const handleSearch = (value) => {
-       
+    const handleSearch = () => {
+      // value="se7en"
         console.log("I handleSearch", value)
         axios
             .get(`https://api.spotify.com/v1/search?q=${value}&type=playlist`, {
@@ -81,11 +84,12 @@ const SpotifySearch = (value) => {
                 console.log("error i handle_search", error);
             });
     };
+    
 
     return (
         <div>
             <button onClick={handleLogin} className={classes.buttonStyle}>Login with spotify</button>
-            <button onClick={handleSearch({value})} className={classes.buttonStyle}>Get music</button>
+            <button onClick={handleSearch} className={classes.buttonStyle}>Get music</button>
 
             <iframe
                 src={`https://open.spotify.com/embed/playlist/${playlistID}`}

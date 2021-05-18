@@ -1,6 +1,10 @@
-import React, { useState , useContext} from "react";
+import React, { useState} from "react";
 import TextInput from "../TextInput";
-import { getMovieById, getMovieBySearch } from "../../api/apiTMDB";
+import {
+  getMovieById,
+  getMovieBySearch,
+  getCastCrewById,
+} from "../../api/apiTMDB";
 import useStyles from "./styles";
 import MatchingMovies from "../MatchingMovies";
 import SpotifySearch from "../spotifySearch";
@@ -12,7 +16,6 @@ const SearchForm = ({ label, value, setValue }) => {
   const [searchTerm, setSeachTerm] = useState("");
 
   const [movie, setMovie] = useState("");
-
 
   const getMovie = async (e) => {
     e.preventDefault();
@@ -35,7 +38,19 @@ const SearchForm = ({ label, value, setValue }) => {
     movie.runtime = data.runtime;
     movie.vote_average = data.vote_average;
 
+    movie.genres = data.genres;
+    console.log("movie object: ", movie.genres);
 
+   // om vi vill hämta cast and crew 
+    const castCrewData = await getCastCrewById(movie.id);
+    data = await castCrewData;
+    console.log("castCrewData", data);
+
+    movie.actor1 = data.cast[0].name;
+    movie.actor2 = data.cast[1].name;
+    movie.actor3 = data.cast[2].name;
+
+    console.log("castData", movie.cast);
 
 
     console.log("movie object: ", movie);
@@ -57,7 +72,7 @@ const SearchForm = ({ label, value, setValue }) => {
           className={classes.buttonStyle}
         ></input>
       </form>
-      <NumberContext.Provider value={movie.title}>
+    
         {movie && (
           <div>
             {/* <h3>Info som ska synas i sökningen: </h3>
@@ -68,22 +83,27 @@ const SearchForm = ({ label, value, setValue }) => {
             <p> {movie.overview}</p>
             <p>runtime:</p>
 
-            <p> {movie.runtime}</p>
-            <p> {movie.vote_average}</p>
+          <p> {movie.runtime}</p>
+          <p> {movie.vote_average}</p>
+          Genres: 
+          {movie.genres.map((genre) => (
+            <p key={genre.id}>{genre.name}</p>
+          ))}
 
+          <p>Actors: {movie.actor1}, {movie.actor2}, {movie.actor3}</p>
 
-            {/*          
-          <p>runtime: {movieRuntime}</p>
-          <p>vote average: {movieVoteAvg}/10</p>
-          */}
+          <img
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt="movie poster"
+          />
+          <SpotifySearch value={movie.title}/>
+        </div>
+      )}
 
-            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="movie poster" />
-          </div>
-        )}
-      
       {/* {matchingMovies?.items ? matchingMovies.items.map((item) => <h1>{item.page}</h1>): 3 }  */}
-      <SpotifySearch value={movie.title}/>
-      </NumberContext.Provider>
+
+    
+      
     </>
 
   );

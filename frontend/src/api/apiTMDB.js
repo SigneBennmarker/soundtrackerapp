@@ -23,3 +23,15 @@ export const getMovieBySearch = async (value) => {
       console.log("fångade ett error när ngt skulle hämtas i getMovieBySearch: ", error);
     }
 };
+
+export const getCastCrewById = async (id) => {
+    console.log("Search term", id);
+    try {
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=9d1d6a6efdcd6adbf672133bfea8f1f1&language=en-US`);
+      const data = await response.json();
+      console.log("data", data);
+      return data;
+    } catch (error) {
+      console.log("fångade ett error när ngt skulle hämtas i getCastCrewById: ", error);
+    }
+};
