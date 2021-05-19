@@ -37,16 +37,17 @@ const SpotifyLogin = ({ value }) => {
                 token_type
             } = getReturnedParamsFromSpotifyAuth(window.location.hash);
 
-            localStorage.clear();
-            localStorage.setItem("accessToken", access_token);
-            localStorage.setItem("expiresIn", expires_in);
-            localStorage.setItem("tokenType", token_type);
+            sessionStorage.clear();
+            sessionStorage.setItem("accessToken", access_token);
+            sessionStorage.setItem("expiresIn", expires_in);
+            sessionStorage.setItem("tokenType", token_type);
+
         }
     });
 
     useEffect(() => {
-        if (localStorage.getItem("accessToken")) {
-            setToken(localStorage.getItem("accessToken"));
+        if (sessionStorage.getItem("accessToken")) {
+            setToken(sessionStorage.getItem("accessToken"));
         }
     }, []);
 
@@ -63,7 +64,7 @@ const SpotifyLogin = ({ value }) => {
                     size={30}
                     className={classes.icon} />
                 <strong
-                className={classes.text}>LOGIN WITH SPOTIFY</strong>
+                    className={classes.text}>LOGIN WITH SPOTIFY</strong>
             </button>
         </div>
     );

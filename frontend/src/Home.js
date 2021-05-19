@@ -10,7 +10,7 @@ function Home() {
   const [loggedIn, setLoggedIn] = useState('false')
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
+    if (sessionStorage.getItem("accessToken")) {
       setLoggedIn('true');
     }
   }, []);
