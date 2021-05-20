@@ -20,11 +20,7 @@ const SearchForm = ({ label, value, setValue }) => {
   const classes = useStyles();
   const [searchTerm, setSeachTerm] = useState("");
   const [movie, setMovie] = useState("");
-<<<<<<< Updated upstream
   const [showErr, setShowErr] = useState(false);
-=======
-  //let SuggestionData;
->>>>>>> Stashed changes
 
   const getSuggestions = async (e, SuggestionData) => {
     const response = await getMovieBySearch(searchTerm);
@@ -41,7 +37,6 @@ const SearchForm = ({ label, value, setValue }) => {
     let data = await response;
     console.log("dATa i getMovie", data);
 
-<<<<<<< Updated upstream
     if (data.total_results === 0) {
       setShowErr(true);
       console.log("SET SHOW ERROR I GEETMOVIE", showErr)
@@ -62,34 +57,16 @@ const SearchForm = ({ label, value, setValue }) => {
       data = await movieData;
       console.log("data", data);
 
-=======
-    let movie = {
-      id: data.results[0].id,
-      title: data.results[0].title,
-      release_date: data.results[0].release_date,
-      release_year: data.results[0].release_date.split("-", 1),
-    };
-
-    const movieData = await getMovieById(movie.id);
-    data = await movieData;
-    console.log("data", data);
-
-    movie.overview = data.overview;
-    movie.poster_path = data.poster_path;
-    movie.vote_average = data.vote_average;
-
-    let runtimeTotal = data.runtime;
-    movie.runtimeHours = Math.floor(runtimeTotal / 60);
-    movie.runtimeMinutes = runtimeTotal % 60;
-
-    movie.genres = data.genres;
-    console.log("movie object: ", movie.genres);
->>>>>>> Stashed changes
 
       movie.overview = data.overview;
       movie.poster_path = data.poster_path;
       movie.runtime = data.runtime;
       movie.vote_average = data.vote_average;
+
+      let runtimeTotal = data.runtime;
+      movie.runtimeHours = Math.floor(runtimeTotal / 60);
+      movie.runtimeMinutes = runtimeTotal % 60;
+
 
       movie.genres = data.genres;
       console.log("movie object: ", movie.genres);
@@ -99,7 +76,6 @@ const SearchForm = ({ label, value, setValue }) => {
       data = await castCrewData;
       console.log("castCrewData", data);
 
-<<<<<<< Updated upstream
       movie.actor1 = data.cast[0].name;
       movie.actor2 = data.cast[1].name;
       movie.actor3 = data.cast[2].name;
@@ -107,21 +83,19 @@ const SearchForm = ({ label, value, setValue }) => {
       console.log("castData", movie.cast);
 
       console.log("movie object: ", movie);
-      setMovie(movie);
-    }
-=======
-    let directorFound = false;
-    data.crew.map((crew) => {
-      if (crew.department == "Directing" && !directorFound) {
-        movie.director = crew.name;
-        directorFound = true;
-      }
-    });
-    console.log("director: ", movie.director);
+     
+      let directorFound = false;
+      data.crew.map((crew) => {
+        if (crew.department == "Directing" && !directorFound) {
+          movie.director = crew.name;
+          directorFound = true;
+        }
+      });
+      console.log("director: ", movie.director);
 
     console.log("movie object: ", movie);
     setMovie(movie);
->>>>>>> Stashed changes
+    }
   };
 
   // const handleOnSearch = (string, results) => {
@@ -142,45 +116,7 @@ const SearchForm = ({ label, value, setValue }) => {
 
   return (
     <>
-<<<<<<< Updated upstream
-      {!showErr ? (
-        <Grid container spacing={8} className="movieContent">
-          <Grid item xs={12} sm={4} >
-            <form onSubmit={getMovie}>
-              <TextInput
-                label="Search for movie"
-                value={searchTerm}
-                setValue={setSeachTerm}
-              />
-              <BiSearch />
-            </form>
-          </Grid>
-          <Grid item xs={12} sm={8}>
-            <Grid container spacing={4}>
-              <Grid item xs={12} sm={3}>
-                {movie && (
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    alt="movie poster"
-                    width="100%"
-                  />
-                )}
-              </Grid>
-              <Grid item xs={12} sm={9}>
-                {movie && (
-                  <div>
-                    <h2>
-                      {" "}
-                      {movie.title} ({movie.release_year})
-                  </h2>
-                    <small> {movie.release_date}  •  </small>
-
-                    {movie.genres.map((genre, index) => (
-                      <small key={genre.id}>{(index ? ', ' : '')}{genre.name}</small>
-                    ))}
-
-                    <small> •  {movie.runtime} minutes</small>
-=======
+       {!showErr ? (
       <Grid container spacing={0} className="movieContent">
         <Grid item sm={12} md={3}>
           {/* <ReactSearchAutocomplete
@@ -202,7 +138,7 @@ const SearchForm = ({ label, value, setValue }) => {
             <BiSearch size={20} />
           </form>
           
-{/*               
+              {/*               
             {SuggestionData.map((movie, index) => (
                     <small key={movie.title}>
                       
@@ -211,6 +147,7 @@ const SearchForm = ({ label, value, setValue }) => {
          ))} */}
         </Grid>
         <Grid item sm={0} md={1}></Grid>
+
         <Grid item sm={12} md={8}>
           <Grid container spacing={4}>
             <Grid item xs={12} sm={4}>
@@ -241,32 +178,12 @@ const SearchForm = ({ label, value, setValue }) => {
                     {" "}
                     • {movie.runtimeHours}h {movie.runtimeMinutes}m
                   </small>
->>>>>>> Stashed changes
 
                     <h3>
                       {" "}
                       <BsStarFill size={20} /> {movie.vote_average}
                     </h3>
 
-<<<<<<< Updated upstream
-                    <p> {movie.overview}</p>
-                  </div>
-                )}
-              </Grid>
-
-              <Grid container spacing={4}>
-                <Grid item xs={12} sm={9}>
-                  {movie.actor3 && (
-
-                    <div className="actors">
-                      <p> <strong>Actors</strong></p>
-                      <p> {movie.actor1}, {movie.actor2}, {movie.actor3}
-                      </p>
-                    </div>
-                  )}
-                </Grid>
-              </Grid>
-=======
                   <p> {movie.overview}</p>
                 </div>
               )}
@@ -297,12 +214,11 @@ const SearchForm = ({ label, value, setValue }) => {
                   <p> {movie.director}</p>
                 </div>
               )}
->>>>>>> Stashed changes
             </Grid>
             {movie.title && (
               <SpotifySearch value={movie.title} />)}
           </Grid>
-<<<<<<< Updated upstream
+        </Grid>
         </Grid>
       ) : <></>}
       {showErr ? (
@@ -322,12 +238,10 @@ const SearchForm = ({ label, value, setValue }) => {
         <Error />
         </>
       ) : <></>}
-=======
-          {movie.title && <SpotifySearch value={movie.title} />}
-        </Grid>
-      </Grid>
->>>>>>> Stashed changes
+
+    
     </>
+ 
   );
 };
 
