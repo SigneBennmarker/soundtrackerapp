@@ -4,9 +4,8 @@ const Error = ({ label, value, setValue }) => {
 
   return (
     <>
-    <h1>Ops!</h1>
-    <p>It appears that the movie you are searching for does not exist.
-        <br/>Try another search phrase!</p>
+    <h1>Oops!</h1>
+    <p>It appears something went wrong.<br/> Try another search phrase!</p>
     </>
   );
 };

@@ -6,16 +6,15 @@ import useStyles from "./styles";
 //     "https://api.spotify.com/v1/search?q=frozen&type=playlist";
 
 const getReturnedParamsFromSpotifyAuth = (hash) => {
-  const stringAfterHashtag = hash.substring(1);
-  const paramsInUrl = stringAfterHashtag.split("&");
-  const paramsSplitUp = paramsInUrl.reduce((accmulater, currentValue) => {
-    console.log("current value :", currentValue);
-    const [key, value] = currentValue.split("=");
-    accmulater[key] = value;
-    return accmulater;
-  }, {});
+    const stringAfterHashtag = hash.substring(1);
+    const paramsInUrl = stringAfterHashtag.split("&");
+    const paramsSplitUp = paramsInUrl.reduce((accmulater, currentValue) => {
+        const [key, value] = currentValue.split("=");
+        accmulater[key] = value;
+        return accmulater;
+    }, {});
 
-  return paramsSplitUp;
+    return paramsSplitUp;
 };
 
 const SpotifySearch = ({ movieTitle, genres}) => {
@@ -28,71 +27,70 @@ const SpotifySearch = ({ movieTitle, genres}) => {
   const [resultsFound, setResultsFound] = useState(false);
   const [oldSearch, setOldSearch] = useState("");
 
-  useEffect(() => {
-    if (window.location.hash) {
-      const {
-        access_token,
-        expires_in,
-        token_type,
-      } = getReturnedParamsFromSpotifyAuth(window.location.hash);
+    useEffect(() => {
+        if (window.location.hash) {
+            const {
+                access_token,
+                expires_in,
+                token_type,
+            } = getReturnedParamsFromSpotifyAuth(window.location.hash);
 
-      localStorage.clear();
-      localStorage.setItem("accessToken", access_token);
-      localStorage.setItem("expiresIn", expires_in);
-      localStorage.setItem("tokenType", token_type);
-    }
-  });
+            localStorage.clear();
+            localStorage.setItem("accessToken", access_token);
+            localStorage.setItem("expiresIn", expires_in);
+            localStorage.setItem("tokenType", token_type);
+        }
+    });
 
-  const headers = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + token,
-  };
+    const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+    };
 
-  useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      setToken(localStorage.getItem("accessToken"));
-    }
+    useEffect(() => {
+      if (localStorage.getItem("accessToken")) {
+          setToken(localStorage.getItem("accessToken"));
+      }
   }, []);
 
   const handleSearch = () => {
-    // value="se7en"
-    console.log("I handleSearch", movieTitle);
-    axios
-      .get(
-        `https://api.spotify.com/v1/search?q=${movieTitle}%20soundtrack&type=playlist`,
-        {
-          headers: headers,
-        }
-      )
-      .then((response) => {
-        console.log("spotify response.data", response.data);
-
-        console.log(
-          "spotify response.data.playslists",
-          response.data.playlists
-        );
-        if (response.data.playlists.items.length) {
-          console.log(
-            "VI får resultat!!",
-            response.data.playlists.items.length
-          );
-          setResultsFound(true);
-          setData(response.data);
-          setPlaylistID(response.data.playlists.items[0].id);
-          console.log("spotify response: ", response);
-        } else {
-          console.log("NOLL REslutat, kallar på search genre ", response.data.playlists.items.length);
-          seatchGenre();
-        }
-      })
-      .catch((error) => {
-        console.log("error i handle_search", error);
-      });
-    setOldSearch(movieTitle);
-    console.log("Old search: ", oldSearch);
-    setSearched(true);
-  };
+        // value="se7en"
+        console.log("I handleSearch", movieTitle);
+        axios
+          .get(
+            `https://api.spotify.com/v1/search?q=${movieTitle}%20soundtrack&type=playlist`,
+            {
+              headers: headers,
+            }
+          )
+          .then((response) => {
+            console.log("spotify response.data", response.data);
+    
+            console.log(
+              "spotify response.data.playslists",
+              response.data.playlists
+            );
+            if (response.data.playlists.items.length) {
+              console.log(
+                "VI får resultat!!",
+                response.data.playlists.items.length
+              );
+              setResultsFound(true);
+              setData(response.data);
+              setPlaylistID(response.data.playlists.items[0].id);
+              console.log("spotify response: ", response);
+            } else {
+              console.log("NOLL REslutat, kallar på search genre ", response.data.playlists.items.length);
+              seatchGenre();
+            }
+          })
+          .catch((error) => {
+            console.log("error i handle_search", error);
+          });
+        setOldSearch(movieTitle);
+        setSearched(true);
+      };
 
   const seatchGenre = () => {
 

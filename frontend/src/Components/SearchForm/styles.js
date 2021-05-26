@@ -16,7 +16,6 @@ const useStyles = makeStyles({
         padding: '0.5rem 2rem 0.5rem 2rem',
         background : 'transparent',
         color: 'white',
-        
     }
   });
 

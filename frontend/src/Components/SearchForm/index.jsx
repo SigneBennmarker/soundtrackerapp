@@ -34,15 +34,12 @@ const SearchForm = ({ label, value, setValue }) => {
 
     const response = await getMovieBySearch(searchTerm);
     let data = await response;
-    console.log("dATa i getMovie", data);
 
     if (data.total_results === 0) {
       setShowErr(true);
-      console.log("SET SHOW ERROR I GEETMOVIE", showErr);
-    } else {
+    }
+    else {
       setShowErr(false);
-
-      console.log("ELSE SET SHOW ERROR I GEETMOVIE", showErr);
 
       let movie = {
         id: data.results[0].id,
@@ -53,7 +50,6 @@ const SearchForm = ({ label, value, setValue }) => {
 
       const movieData = await getMovieById(movie.id);
       data = await movieData;
-      console.log("data", data);
 
       movie.overview = data.overview;
       movie.poster_path = data.poster_path;
@@ -65,20 +61,14 @@ const SearchForm = ({ label, value, setValue }) => {
       movie.runtimeMinutes = runtimeTotal % 60;
 
       movie.genres = data.genres;
-      console.log("movie object: ", movie.genres);
 
       // om vi vill hämta cast and crew
       const castCrewData = await getCastCrewById(movie.id);
       data = await castCrewData;
-      console.log("castCrewData", data);
 
       movie.actor1 = data.cast[0].name;
       movie.actor2 = data.cast[1].name;
       movie.actor3 = data.cast[2].name;
-
-      console.log("castData", movie.cast);
-
-      console.log("movie object: ", movie);
 
       let directorFound = false;
       data.crew.map((crew) => {
@@ -87,9 +77,7 @@ const SearchForm = ({ label, value, setValue }) => {
           directorFound = true;
         }
       });
-      console.log("director: ", movie.director);
 
-      console.log("movie object: ", movie);
       setMovie(movie);
     }
   };
@@ -127,7 +115,7 @@ const SearchForm = ({ label, value, setValue }) => {
             <TextInput
               value={searchTerm}
               setValue={setSeachTerm}
-              // handleChange={getSuggestions(SuggestionData)}
+            // handleChange={getSuggestions(SuggestionData)}
             />
             <BiSearch size={20} />
           </form>
@@ -166,25 +154,23 @@ const SearchForm = ({ label, value, setValue }) => {
                       <small key={genre.id}>
                         {index ? ", " : ""}
                         {genre.name}
-                        
                       </small>
                     ))}
 
                     <small>
                       {" "}
-                      • {movie.runtimeHours}h {movie.runtimeMinutes}m
-                    </small>
-
+                    • {movie.runtimeHours}h {movie.runtimeMinutes}m
+                  </small>
                     <h3>
                       {" "}
                       <BsStarFill size={20} /> {movie.vote_average}
                     </h3>
 
                     <p> {movie.overview}</p>
-                  </div>
+                  </div >
                 )}
-              </Grid>
-            </Grid>
+              </Grid >
+            </Grid >
             <Grid container spacing={0}>
               <Grid item xs={11} sm={9} className="castAndCrew">
                 {movie.actor3 && (
@@ -211,15 +197,15 @@ const SearchForm = ({ label, value, setValue }) => {
                   </div>
                 )}
               </Grid>
-              
-            </Grid>
+
+            </Grid >
             {movie.title && <SpotifySearch movieTitle={movie.title} genres={movie.genres} />}
-          </Grid>
+          </Grid >
         ) : (
-          <></>
-        )}
+            <></>
+          )}
         {showErr ? <Error /> : <></>}
-      </Grid>
+      </Grid >
     </>
   );
 };
