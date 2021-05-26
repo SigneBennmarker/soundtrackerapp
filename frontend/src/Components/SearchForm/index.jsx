@@ -26,7 +26,7 @@ const SearchForm = ({ label, value, setValue }) => {
     const response = await getMovieBySearch(searchTerm);
     SuggestionData = await response.results;
     console.log("dATa i getSuggestions", SuggestionData);
-  //  setSuggestions(SuggestionData)
+    //  setSuggestions(SuggestionData)
     return SuggestionData;
   };
 
@@ -39,24 +39,22 @@ const SearchForm = ({ label, value, setValue }) => {
 
     if (data.total_results === 0) {
       setShowErr(true);
-      console.log("SET SHOW ERROR I GEETMOVIE", showErr)
-    }
-    else {
+      console.log("SET SHOW ERROR I GEETMOVIE", showErr);
+    } else {
       setShowErr(false);
 
-      console.log("ELSE SET SHOW ERROR I GEETMOVIE", showErr)
+      console.log("ELSE SET SHOW ERROR I GEETMOVIE", showErr);
 
       let movie = {
         id: data.results[0].id,
         title: data.results[0].title,
         release_date: data.results[0].release_date,
-        release_year: data.results[0].release_date.split('-', 1),
+        release_year: data.results[0].release_date.split("-", 1),
       };
 
       const movieData = await getMovieById(movie.id);
       data = await movieData;
       console.log("data", data);
-
 
       movie.overview = data.overview;
       movie.poster_path = data.poster_path;
@@ -66,7 +64,6 @@ const SearchForm = ({ label, value, setValue }) => {
       let runtimeTotal = data.runtime;
       movie.runtimeHours = Math.floor(runtimeTotal / 60);
       movie.runtimeMinutes = runtimeTotal % 60;
-
 
       movie.genres = data.genres;
       console.log("movie object: ", movie.genres);
@@ -83,7 +80,7 @@ const SearchForm = ({ label, value, setValue }) => {
       console.log("castData", movie.cast);
 
       console.log("movie object: ", movie);
-     
+
       let directorFound = false;
       data.crew.map((crew) => {
         if (crew.department == "Directing" && !directorFound) {
@@ -93,8 +90,8 @@ const SearchForm = ({ label, value, setValue }) => {
       });
       console.log("director: ", movie.director);
 
-    console.log("movie object: ", movie);
-    setMovie(movie);
+      console.log("movie object: ", movie);
+      setMovie(movie);
     }
   };
 
@@ -116,7 +113,6 @@ const SearchForm = ({ label, value, setValue }) => {
 
   return (
     <>
-       {!showErr ? (
       <Grid container spacing={0} className="movieContent">
         <Grid item sm={12} md={3}>
           {/* <ReactSearchAutocomplete
@@ -133,12 +129,11 @@ const SearchForm = ({ label, value, setValue }) => {
               value={searchTerm}
               setValue={setSeachTerm}
               // handleChange={getSuggestions(SuggestionData)}
-             
             />
             <BiSearch size={20} />
           </form>
-          
-              {/*               
+
+          {/*               
             {SuggestionData.map((movie, index) => (
                     <small key={movie.title}>
                       
@@ -146,104 +141,88 @@ const SearchForm = ({ label, value, setValue }) => {
                       
          ))} */}
         </Grid>
+
         <Grid item sm={0} md={1}></Grid>
+        {!showErr ? (
+          <Grid item sm={12} md={8}>
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={4}>
+                {movie && (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    alt="movie poster"
+                    width="100%"
+                  />
+                )}
+              </Grid>
+              <Grid item xs={12} sm={8}>
+                {movie && (
+                  <div>
+                    <h2>
+                      {movie.title} ({movie.release_year})
+                    </h2>
+                    <small> {movie.release_date} • </small>
 
-        <Grid item sm={12} md={8}>
-          <Grid container spacing={4}>
-            <Grid item xs={12} sm={4}>
-              {movie && (
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt="movie poster"
-                  width="100%"
-                />
-              )}
-            </Grid>
-            <Grid item xs={12} sm={8}>
-              {movie && (
-                <div>
-                  <h2>
-                    {movie.title} ({movie.release_year})
-                  </h2>
-                  <small> {movie.release_date} • </small>
+                    {movie.genres.map((genre, index) => (
+                      <small key={genre.id}>
+                        {index ? ", " : ""}
+                        {genre.name}
+                        
+                      </small>
+                    ))}
 
-                  {movie.genres.map((genre, index) => (
-                    <small key={genre.id}>
-                      {index ? ", " : ""}
-                      {genre.name}
+                    <small>
+                      {" "}
+                      • {movie.runtimeHours}h {movie.runtimeMinutes}m
                     </small>
-                  ))}
-
-                  <small>
-                    {" "}
-                    • {movie.runtimeHours}h {movie.runtimeMinutes}m
-                  </small>
 
                     <h3>
                       {" "}
                       <BsStarFill size={20} /> {movie.vote_average}
                     </h3>
 
-                  <p> {movie.overview}</p>
-                </div>
-              )}
+                    <p> {movie.overview}</p>
+                  </div>
+                )}
+              </Grid>
             </Grid>
+            <Grid container spacing={0}>
+              <Grid item xs={11} sm={9} className="castAndCrew">
+                {movie.actor3 && (
+                  <div>
+                    <p>
+                      {" "}
+                      <strong>Actors</strong>
+                    </p>
+                    <p>
+                      {" "}
+                      {movie.actor1}, {movie.actor2}, {movie.actor3}
+                    </p>
+                  </div>
+                )}
+              </Grid>
+              <Grid item xs={11} sm={3} className="castAndCrew">
+                {movie.director && (
+                  <div>
+                    <p>
+                      {" "}
+                      <strong>Director</strong>
+                    </p>
+                    <p> {movie.director}</p>
+                  </div>
+                )}
+              </Grid>
+              
+            </Grid>
+            {movie.title && <SpotifySearch movieTitle={movie.title} genres={movie.genres} />}
           </Grid>
-          <Grid container spacing={0}>
-            <Grid item xs={11} sm={9} className="castAndCrew">
-              {movie.actor3 && (
-                <div>
-                  <p>
-                    {" "}
-                    <strong>Actors</strong>
-                  </p>
-                  <p>
-                    {" "}
-                    {movie.actor1}, {movie.actor2}, {movie.actor3}
-                  </p>
-                </div>
-              )}
-            </Grid>
-            <Grid item xs={11} sm={3} className="castAndCrew">
-              {movie.director && (
-                <div>
-                  <p>
-                    {" "}
-                    <strong>Director</strong>
-                  </p>
-                  <p> {movie.director}</p>
-                </div>
-              )}
-            </Grid>
-            {movie.title && (
-              <SpotifySearch value={movie.title} />)}
-          </Grid>
-        </Grid>
-        </Grid>
-      ) : <></>}
-      {showErr ? (
-        <>
-        <Grid container spacing={8} className="movieContent">
-        <Grid item xs={12} sm={4} >
-          <form onSubmit={getMovie}>
-            <TextInput
-              label="Search for movie"
-              value={searchTerm}
-              setValue={setSeachTerm}
-            />
-            <BiSearch />
-          </form>
-        </Grid>
+        ) : (
+          <></>
+        )}
+        {showErr ? <Error /> : <></>}
       </Grid>
-        <Error />
-        </>
-      ) : <></>}
-
-    
     </>
- 
   );
 };
 
 export default SearchForm;
-

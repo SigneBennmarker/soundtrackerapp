@@ -18,9 +18,8 @@ const getReturnedParamsFromSpotifyAuth = (hash) => {
   return paramsSplitUp;
 };
 
-const SpotifySearch = ({ value }) => {
-  const movieTitle = value;
-  console.log("movieTilte: ", movieTitle);
+const SpotifySearch = ({ movieTitle, genres}) => {
+
   const classes = useStyles();
   const [token, setToken] = useState("");
   const [data, setData] = useState();
@@ -57,10 +56,10 @@ const SpotifySearch = ({ value }) => {
 
   const handleSearch = () => {
     // value="se7en"
-    console.log("I handleSearch", value);
+    console.log("I handleSearch", movieTitle);
     axios
       .get(
-        `https://api.spotify.com/v1/search?q=${value}%20soundtrack&type=playlist`,
+        `https://api.spotify.com/v1/search?q=${movieTitle}%20soundtrack&type=playlist`,
         {
           headers: headers,
         }
@@ -82,8 +81,8 @@ const SpotifySearch = ({ value }) => {
           setPlaylistID(response.data.playlists.items[0].id);
           console.log("spotify response: ", response);
         } else {
-          console.log("NOLL REslutat", response.data.playlists.items.length);
-          setResultsFound(false);
+          console.log("NOLL REslutat, kallar på search genre ", response.data.playlists.items.length);
+          seatchGenre();
         }
       })
       .catch((error) => {
@@ -92,6 +91,58 @@ const SpotifySearch = ({ value }) => {
 
     setSearched(true);
   };
+
+  const seatchGenre = () => {
+
+    let twoGenres = false;
+    genres.map((genre, index) => {
+      if (index) {
+        twoGenres= true;
+        console.log("I seatchGenre GENRE 2", genre.name);
+
+      }
+    });
+
+    console.log("I seatchGenre GENRE 1", genres[0].name );
+    let genre = genres[0].name;
+    if (twoGenres){
+    genre = genres[0].name+" "+genres[1].name;
+    console.log("I seatchGenre TOOOGETHER", genre );
+    }
+    axios
+      .get(
+        `https://api.spotify.com/v1/search?q=${genre}&type=playlist`,
+        {
+          headers: headers,
+        }
+      )
+      .then((response) => {
+        console.log("spotify response.data", response.data);
+
+        console.log(
+          "spotify response.data.playslists",
+          response.data.playlists
+        );
+        if (response.data.playlists.items.length) {
+          console.log(
+            "VI får resultat!!",
+            response.data.playlists.items.length
+          );
+          setResultsFound(true);
+          setData(response.data);
+          setPlaylistID(response.data.playlists.items[0].id);
+          console.log("spotify response: ", response);
+        } else {
+          console.log("NOLL REslutat visar felmeddelande", response.data.playlists.items.length);
+          setResultsFound(false);
+        }
+      })
+      .catch((error) => {
+        console.log("error i handle_search", error);
+      });
+
+    setSearched(true);
+  }
 
   return (
     <div className="getMusic">
