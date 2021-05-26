@@ -26,6 +26,7 @@ const SpotifySearch = ({ movieTitle, genres}) => {
   const [playlistID, setPlaylistID] = useState("");
   const [searched, setSearched] = useState(false);
   const [resultsFound, setResultsFound] = useState(false);
+  const [oldSearch, setOldSearch] = useState("");
 
   useEffect(() => {
     if (window.location.hash) {
@@ -88,7 +89,8 @@ const SpotifySearch = ({ movieTitle, genres}) => {
       .catch((error) => {
         console.log("error i handle_search", error);
       });
-
+    setOldSearch(movieTitle);
+    console.log("Old search: ", oldSearch);
     setSearched(true);
   };
 
@@ -149,7 +151,7 @@ const SpotifySearch = ({ movieTitle, genres}) => {
       <button onClick={handleSearch} className={classes.buttonStyle}>
         <strong>GET MUSIC</strong>
       </button>
-      {resultsFound && (
+      {resultsFound && (oldSearch === movieTitle) && (
         <iframe
           src={`https://open.spotify.com/embed/playlist/${playlistID}`}
           width="90%"
@@ -159,7 +161,7 @@ const SpotifySearch = ({ movieTitle, genres}) => {
           allow="encrypted-media"
         ></iframe>
       )}
-      {!resultsFound && searched && (
+      {!resultsFound && searched && (oldSearch === movieTitle) && (
         <p> We're sorry but we couldn't find any playlists for this movie</p>
       )}
     </div>

@@ -12,7 +12,6 @@ import Error from "../Error";
 import Grid from "@material-ui/core/Grid";
 import { BsStarFill } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
-import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 //const NumberContext = React.createContext();
 
